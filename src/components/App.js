@@ -1,15 +1,13 @@
-<p>Now I can render any React component on any DOM node I want using ReactDOM.render</p>
+// <p>Now I can render any React component on any DOM node I want using ReactDOM.render</p>
 import React, { useState, useEffect } from 'react';
 import ReactDOM from 'react-dom';
-import "./App.css"; // Assuming CSS is in App.css
-import marked from 'marked'; // Ensure marked is installed using `npm install marked`
+import marked from 'marked';
 
 function App() {
   const [markdown, setMarkdown] = useState('');
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Simulate loading time
     const timer = setTimeout(() => setLoading(false), 1000);
     return () => clearTimeout(timer);
   }, []);
@@ -36,4 +34,5 @@ function App() {
 
 ReactDOM.render(<App />, document.getElementById('root'));
 
-
+     
+      
