@@ -1,76 +1,32 @@
-import React, { useState, useEffect } from "react";
-import ReactMarkdown from "react-markdown";
-import "../styles/App.css";
+import React, { useState, useEffect } from 'react';
+import MarkdownEditor from './MarkdownEditor';
+import MarkdownPreview from './MarkdownPreview';
+import "../styles/App.css"
 
-function App() {
-  const [markdown, setMarkdown] = useState("");
-  const [loading, setLoading] = useState(true);
-
-  const handleChange = (e) => {
-    setMarkdown(e.target.value);
-  };
-
-  const changeLoadingVar = () => {
-    setLoading(false);
-  };
+const App = () => {
+  const [markdown, setMarkdown] = useState('');
+  const [html, setHtml] = useState('');
 
   useEffect(() => {
-    setTimeout(changeLoadingVar, 3000);
-  }, []);
-
-  if (loading) {
-    return (
-      <div>
-        <h1>Loading...</h1>
-      </div>
-    );
-  }
+    // Simple markdown to HTML conversion
+    const convertedHtml = markdown
+      .replace(/^# (.*$)/gim, '<h1>$1</h1>') // Headers
+      .replace(/^## (.*$)/gim, '<h2>$1</h2>')
+      .replace(/^### (.*$)/gim, '<h3>$1</h3>')
+      .replace(/\*\*(.*)\*\*/gim, '<strong>$1</strong>') // Bold
+      .replace(/\*(.*)\*/gim, '<em>$1</em>') // Italics
+      .replace(/\n/gim, '<br/>') // Line breaks
+      .replace(/\n\n/gim, '<p></p>'); // Paragraphs
+    
+    setHtml(convertedHtml);
+  }, [markdown]);
 
   return (
     <div className="app">
-      <textarea onChange={handleChange} />
-      <ReactMarkdown className="preview" children={markdown} />
+      <MarkdownEditor markdown={markdown} setMarkdown={setMarkdown} />
+      <MarkdownPreview html={html} />
     </div>
   );
-}
-
-// class App extends React.Component{
-
-//   constructor(props){
-//     super(props)
-//     this.state = {
-//       markdown: "",
-//       loading: true
-//     }
-//     this.handleChange = this.handleChange.bind(this);
-//     this.changeLoadingVar = this.changeLoadingVar.bind(this);
-//   }
-//   handleChange(e){
-//     this.setState({
-//       markdown: e.target.value
-//     })
-//   }
-//   changeLoadingVar(){
-//     this.setState({
-//       loading: false
-//     })
-//   }
-
-//   componentDidMount(){
-//     setTimeout(this.changeLoadingVar,3000)
-//   }
-//   render(){
-//     if(this.state.loading){
-//       return (<div><h1>Loading...</h1></div>)
-//     }
-
-//     return(
-//       <div className="app">
-//         <textarea onChange={this.handleChange}/>
-//         <ReactMarkdown className="preview" children={this.state.markdown}/>
-//       </div>
-//     )
-//   }
-// }
+};
 
 export default App;
